@@ -1,0 +1,40 @@
+<% items = (changesets + journals).sort { |x,y| x.event_datetime <=> y.event_datetime } %>
+<% items.each do |item| %>
+  <% if item.is_a? Journal %>
+    <% journal = item %>
+
+    <% reply_links = authorize_for('issues', 'edit') -%>
+      <div id="change-<%= journal.id %>" class="<%= journal.css_classes %>">
+        <div id="note-<%= journal.indice %>">
+        <h4><%= link_to "##{journal.indice}", {:anchor => "note-#{journal.indice}"}, :class => "journal-link" %>
+        <%= avatar(journal.user, :size => "24") %>
+        <%= authoring journal.created_on, journal.user, :label => :label_updated_time_by %></h4>
+
+        <% if journal.details.any? %>
+        <ul class="details">
+          <% details_to_strings(journal.details).each do |string| %>
+           <li><%= string %></li>
+          <% end %>
+        </ul>
+        <% end %>
+        <%= render_notes(issue, journal, :reply_links => reply_links) unless journal.notes.blank? %>
+        </div>
+      </div>
+      <%= call_hook(:view_issues_history_journal_bottom, { :journal => journal }) %>
+
+    <% heads_for_wiki_formatter if User.current.allowed_to?(:edit_issue_notes, issue.project) || User.current.allowed_to?(:edit_own_issue_notes, issue.project) %>
+
+  <% elsif item.is_a? Changeset %>
+    <% changeset = item %>
+
+    <div class="changeset journal">
+    <p><%= link_to_revision(changeset, changeset.repository,
+                            :text => "#{l(:label_revision)} #{changeset.format_identifier}") %><br />
+        <span class="author"><%= authoring(changeset.committed_on, changeset.author) %></span></p>
+    <div class="wiki">
+        <%= textilizable(changeset, :comments) %>
+    </div>
+    </div>
+
+  <% end %>
+<% end %>
