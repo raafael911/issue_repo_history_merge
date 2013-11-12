@@ -1,0 +1,19 @@
+<script type="text/javascript">
+  <!--
+  function handler_toggle_revisions () {
+    var checkbox = $("#show_revisions");
+    if (checkbox.attr('checked')) {
+      $("#issue-changesets").css("display", "inline");
+    }
+    else {
+      $("#issue-changesets").css("display", "none");
+    }
+  }
+  //-->
+</script>
+<style type="text/css">
+  #issue-changesets { display:none; }
+</style>
+<%= check_box_tag 'show_revisions', false, false, onclick: 'handler_toggle_revisions()' %>
+<%= label_tag 'show_revisions', 'Zeige Revisionen' %>
+<br/>
