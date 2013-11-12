@@ -1,4 +1,6 @@
 <% items = (changesets + journals).sort { |x,y| x.event_datetime <=> y.event_datetime } %>
+<% items.reverse! if User.current.wants_comments_in_reverse_order? %>
+
 <% items.each do |item| %>
   <% if item.is_a? Journal %>
     <% journal = item %>
