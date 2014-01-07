@@ -1,19 +1,24 @@
-# Issue-Repository History Merge
+= Issue-Repository History Merge
 
-## Customized history view
+== Customized history view
 
 To get a better overview of issue comments and changesets, this plugin customizes the issue show view. The two lists of changesets and comments are merged and displayed as one list with each changeset and comment ordered by their creation timestamp. This gives a better view on the timeline than two parallel lists with no correlation in time.
-This plugin also adds a checkbox on the right in the issue view where you can 
+This plugin also adds a checkbox on the right in the issue view where you can toggle the visibility of the changesets so you can have a view on nothing but the issue comments or
+on both, comments and issues.
 
-## How to install
+== Installation
 
 Just copy the folder in your redmines plugin folder and use `git checkout <tagname>` to check out the tag for your specific redmine version. Then restart the server.
 
 
-## So, where here is the beef?
+== So, where is the beef?
 
 I had to overwrite the core issue show view, so it _may_ be that this plugin is not update save. So i tagged some redmine versions in the git scm of this plugin so you can checkout that tag and be sure that there should be no problem with compatibility.
 
+== License
 
-## ToDo
+This plugin is published under the GPLv2.
+
+== ToDo
+
 - [ ] Preferences setting for invisible revision per default or not
