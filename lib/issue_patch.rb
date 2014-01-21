@@ -9,7 +9,7 @@ module IssuesControllerPatch
     
     base.class_eval do
       unloadable
-      before_filter :authorize, :except => [:toggle_revisions]
+      before_filter :authorize, :except => [:index,:toggle_revisions]
     end
     
   end
