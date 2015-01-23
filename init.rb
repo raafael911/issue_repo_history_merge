@@ -1,5 +1,5 @@
 require_dependency 'hooks/checkbox_hook'
-require_dependency 'issue_patch'
+require_dependency 'repo_merge_issue_controller_patch'
 
 Redmine::Plugin.register :issue_repo_history_merge do
   name 'Issue Repo History Merge'
