@@ -1,0 +1,13 @@
+var toggle_changeset_click_handler = function(event) {
+    if ($(".changeset").css("display") == "none") {
+      $(".changeset").css("display", "block");
+    }
+    else {
+      $(".changeset").css("display", "none");
+    }
+  };
+
+
+$(document).ready(function() {
+  $("#toggle_changesets").click(toggle_changeset_click_handler);
+});

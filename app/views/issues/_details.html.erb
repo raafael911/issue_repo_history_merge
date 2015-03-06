@@ -1,0 +1,17 @@
+<% content_for :header_tags do %>
+  <%= javascript_include_tag 'issue', :plugin => 'issue_repo_history_merge' %>
+<% end %>
+
+<style type="text/css">
+  <% unless session[:show_revisions] %>
+  	div.changeset { display:none; }
+  <% end %>
+</style>
+
+<% if !@issue.nil? %>
+  <h3>Details</h3>
+  <% if @changesets.any? %>
+    <%= link_to l(:show_changesets), issue_toggle_revisions_path, :remote => true, :id => 'toggle_changesets' %>
+  <% end %>
+<% end %>
+<br/>

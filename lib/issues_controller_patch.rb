@@ -21,7 +21,7 @@ module IssuesControllerPatch
   module InstanceMethods
     
     def toggle_revisions 
-      session[:show_revisions] = params[:show_revisions]
+      session[:show_revisions] = !session[:show_revisions]
         
       respond_to do |format|
         format.js { render nothing: true }
