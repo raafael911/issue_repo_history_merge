@@ -110,8 +110,9 @@ end %>
 <% if @changesets.present? or @journals.present? %>
 <div id="history">
 <h3><%=l(:label_history)%></h3>
-<%= render :partial => 'changesets_and_history', :locals => { :issue => @issue, :journals => @journals, :changesets => @changesets} %>
+<%= render :partial => 'changesets_and_history', :locals => { :issue => @issue, :journals => @journals, :changesets => @changesets, :relations => @relations } %>
 <% end %>
+
 
 <div style="clear: both;"></div>
 <%= render :partial => 'action_menu' %>
@@ -119,7 +120,7 @@ end %>
 <div style="clear: both;"></div>
 <% if @issue.editable? %>
   <div id="update" style="display:none;">
-  <h3><%= l(:button_update) %></h3>
+  <h3><%= l(:button_edit) %></h3>
   <%= render :partial => 'edit' %>
   </div>
 <% end %>

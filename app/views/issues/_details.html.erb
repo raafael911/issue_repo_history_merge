@@ -1,17 +1,62 @@
-<% content_for :header_tags do %>
-  <%= javascript_include_tag 'issue', :plugin => 'issue_repo_history_merge' %>
+<%= javascript_tag do %>
+  var toggle_changesets_click_handler = function(event) {
+    var hide_changesets = "<%= l(:hide_changesets) %>";
+    var show_changesets = "<%= l(:show_changesets) %>";
+    if ($(".changeset").css("display") == "none") {
+      $(".changeset").css("display", "block");
+      $("#toggle_changesets").text(hide_changesets);
+    }
+    else {
+      $(".changeset").css("display", "none")	;
+      $("#toggle_changesets").text(show_changesets);
+    }
+  };
+
+  var toggle_relations_click_handler = function(event) {
+    var hide_relations = "<%= l(:hide_relations) %>";
+    var show_relations = "<%= l(:show_relations) %>";
+    if ($(".foreign_journal").css("display") == "none") {
+      $(".foreign_journal").css("display", "block");
+      $("#toggle_relations").text(hide_relations);
+    }
+    else {
+      $(".foreign_journal").css("display", "none");
+      $("#toggle_relations").text(show_relations);
+    }
+  };
+
+  $(document).ready(function() {
+    $("#toggle_changesets").click(toggle_changesets_click_handler);
+    $("#toggle_relations").click(toggle_relations_click_handler);
+  });
 <% end %>
 
 <style type="text/css">
   <% unless session[:show_revisions] %>
   	div.changeset { display:none; }
   <% end %>
+  <% unless session[:show_relations] %>
+    div.foreign_journal { display:none; }
+  <% end %>
 </style>
 
 <% if !@issue.nil? %>
   <h3>Details</h3>
-  <% if @changesets.any? %>
-    <%= link_to l(:show_changesets), issue_toggle_revisions_path, :remote => true, :id => 'toggle_changesets' %>
-  <% end %>
+  <ul>
+    <% if @changesets.any? %>
+      <li><% if session[:show_revisions] %>
+        <%= link_to l(:hide_changesets), issue_toggle_revisions_path, :remote => true, :id => 'toggle_changesets' %>
+      <% else %>
+        <%= link_to l(:show_changesets), issue_toggle_revisions_path, :remote => true, :id => 'toggle_changesets' %>
+      <% end %></li>
+    <% end %>
+    <% if @relations.any? %>
+      <li><% if session[:show_relations] %>
+        <%= link_to l(:hide_relations), issue_toggle_relations_path, :remote => true, :id => 'toggle_relations' %>
+      <% else %>
+        <%= link_to l(:show_relations), issue_toggle_relations_path, :remote => true, :id => 'toggle_relations' %>      
+      <% end %></li>
+    <% end %>
+  </ul>
 <% end %>
 <br/>

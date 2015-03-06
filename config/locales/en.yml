@@ -1,3 +1,6 @@
 # English strings go here for Rails i18n
 en:
   show_changesets: "Show changesets"
+  hide_changesets: "Hide changesets"
+  show_relations: "Show related comments"
+  hide_relations: "Hide related comments"

@@ -9,7 +9,7 @@ module IssuesControllerPatch
     
     base.class_eval do
       unloadable
-      before_filter :authorize, :except => [:index,:toggle_revisions]
+      before_filter :authorize, :except => [:index, :toggle_revisions, :toggle_relations]
     end
     
   end
@@ -20,13 +20,20 @@ module IssuesControllerPatch
   
   module InstanceMethods
     
+    def toggle_relations
+      session[:show_relations] = !session[:show_relations]
+        
+      respond_to do |format|
+        format.js { render nothing: true }
+      end
+    end
+    
     def toggle_revisions 
       session[:show_revisions] = !session[:show_revisions]
         
       respond_to do |format|
         format.js { render nothing: true }
-      end
-      
+      end      
     end
     
   end

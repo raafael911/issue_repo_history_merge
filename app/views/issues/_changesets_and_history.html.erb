@@ -1,4 +1,11 @@
-<% items = (changesets + journals).sort { |x,y| x.event_datetime <=> y.event_datetime } %>
+<% related_journals = relations.map {|x| x.other_issue(issue).journals.includes(:user, :details)} %>
+<% related_journals.map {|x| x.reject!(&:private_notes?) unless User.current.allowed_to?(:view_private_notes, issue.project)} %>
+<% related_journals.map {|x| x.each_with_index {|j,i| j.indice = i+1}} %>
+<% related_journals.flatten! %>
+<% Journal.preload_journals_details_custom_fields(related_journals) %>
+<% related_journals.reject! {|journal| !journal.notes? && journal.visible_details.empty?} %>
+
+<% items = (changesets + journals + related_journals).sort { |x,y| x.event_datetime <=> y.event_datetime} %>
 <% items.reverse! if User.current.wants_comments_in_reverse_order? %>
 
 <% items.each do |item| %>
@@ -6,26 +13,43 @@
     <% journal = item %>
 
     <% reply_links = authorize_for('issues', 'edit') -%>
-      <div id="change-<%= journal.id %>" class="<%= journal.css_classes %>">
-        <div id="note-<%= journal.indice %>">
-        <h4><%= link_to "##{journal.indice}", {:anchor => "note-#{journal.indice}"}, :class => "journal-link" %>
-        <%= avatar(journal.user, :size => "24") %>
-        <%= authoring journal.created_on, journal.user, :label => :label_updated_time_by %></h4>
+      <div id="change-<%= journal.id %>" class="<%= journal.css_classes %> <%= 'foreign_journal' if journal.journalized_id != issue.id %>">
+        <% if journal.journalized_id == issue.id %>
+          <div id="note-<%= journal.indice %>">
+          <h4><%= link_to "##{journal.indice}", {:anchor => "note-#{journal.indice}"}, :class => "journal-link" %>
+          <%= avatar(journal.user, :size => "24") %>
+          <%= authoring journal.created_on, journal.user, :label => :label_updated_time_by %></h4>
 
-        <% if journal.details.any? %>
-        <ul class="details">
-          <% details_to_strings(journal.details).each do |string| %>
-           <li><%= string %></li>
+          <% if journal.details.any? %>
+          <ul class="details">
+            <% details_to_strings(journal.details).each do |string| %>
+             <li><%= string %></li>
+            <% end %>
+          </ul>
           <% end %>
-        </ul>
-        <% end %>
-        <%= render_notes(issue, journal, :reply_links => reply_links) unless journal.notes.blank? %>
+          <%= render_notes(issue, journal, :reply_links => reply_links) unless journal.notes.blank? %>
+          </div>
         </div>
-      </div>
-      <%= call_hook(:view_issues_history_journal_bottom, { :journal => journal }) %>
+        <%= call_hook(:view_issues_history_journal_bottom, { :journal => journal }) %>
 
-    <% heads_for_wiki_formatter if User.current.allowed_to?(:edit_issue_notes, issue.project) || User.current.allowed_to?(:edit_own_issue_notes, issue.project) %>
+        <% heads_for_wiki_formatter if User.current.allowed_to?(:edit_issue_notes, issue.project) || User.current.allowed_to?(:edit_own_issue_notes, issue.project) %>
+      <% else %>
+        <div id="note-<%= journal.indice %>">
+          <h4><%= link_to "#{l(:label_issue)} ##{journal.journalized_id} - #{journal.indice}", issue_path(journal.journalized_id, :anchor => "note-#{journal.indice}"), :class => "journal-link" %>	
+          <%= avatar(journal.user, :size => "24") %>
+          <%= authoring journal.created_on, journal.user, :label => :label_updated_time_by %></h4>
 
+          <% if journal.details.any? %>
+          <ul class="details">
+            <% details_to_strings(journal.details).each do |string| %>
+             <li><%= string %></li>
+            <% end %>
+          </ul>
+          <% end %>
+          <%= render_notes(issue, journal, :reply_links => reply_links) unless journal.notes.blank? %>
+        </div>
+        <%= call_hook(:view_issues_history_journal_bottom, { :journal => journal }) %>
+      <% end %>
   <% elsif item.is_a? Changeset %>
     <% changeset = item %>
 
@@ -37,6 +61,5 @@
         <%= textilizable(changeset, :comments) %>
     </div>
     </div>
-
   <% end %>
 <% end %>
