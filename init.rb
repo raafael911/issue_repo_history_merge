@@ -1,5 +1,5 @@
 require_dependency 'hooks/view_hooks'
-require_dependency 'repo_merge_issue_controller_patch'
+require_dependency 'repo_merge_issues_controller_patch'
 
 Redmine::Plugin.register :issue_repo_history_merge do
   name 'Issue Repo History Merge'
