@@ -4,3 +4,4 @@ en:
   hide_changesets: "Hide changesets"
   show_relations: "Show related comments"
   hide_relations: "Hide related comments"
+  label_issue_more_infos: "Connected information"

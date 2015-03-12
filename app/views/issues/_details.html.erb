@@ -41,7 +41,7 @@
 </style>
 
 <% if !@issue.nil? %>
-  <h3>Details</h3>
+  <h3><%= l(:label_issue_more_infos) %></h3>
   <ul>
     <% if @changesets.any? %>
       <li><% if session[:show_revisions] %>

@@ -34,7 +34,7 @@
         <% heads_for_wiki_formatter if User.current.allowed_to?(:edit_issue_notes, issue.project) || User.current.allowed_to?(:edit_own_issue_notes, issue.project) %>
       <% else %>
         <div id="note-<%= journal.indice %>">
-          <h4><%= link_to "#{l(:label_issue)} ##{journal.journalized_id} - #{journal.indice}", issue_path(journal.journalized_id, :anchor => "note-#{journal.indice}"), :class => "journal-link" %>	
+          <h4><%= link_to "#{l(:label_issue)} #{journal.journalized_id} - ##{journal.indice}", issue_path(journal.journalized_id, :anchor => "note-#{journal.indice}"), :class => "journal-link" %>	
           <%= avatar(journal.user, :size => "24") %>
           <%= authoring journal.created_on, journal.user, :label => :label_updated_time_by %></h4>
 
