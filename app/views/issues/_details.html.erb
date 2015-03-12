@@ -40,7 +40,7 @@
   <% end %>
 </style>
 
-<% if !@issue.nil? and @changesets.any? and @relations.any? %>
+<% if !@issue.nil? and (@changesets.any? or @relations.any?) %>
   <h3><%= l(:label_issue_more_infos) %></h3>
   <ul>
     <% if @changesets.any? %>
