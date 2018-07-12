@@ -68,7 +68,7 @@
       end
   end
 end %>
-<%= render_custom_fields_rows(@issue) %>
+<%= render_half_width_custom_fields_rows(@issue) %>
 <%= call_hook(:view_issues_show_details_bottom, :issue => @issue) %>
 </div>
 
@@ -88,6 +88,8 @@ end %>
 <% end %>
 <%= link_to_attachments @issue, :thumbnails => true %>
 <% end -%>
+
+<%= render_full_width_custom_fields_rows(@issue) %>
 
 <%= call_hook(:view_issues_show_description_bottom, :issue => @issue) %>
 
@@ -151,5 +153,4 @@ end %>
     <%= auto_discovery_link_tag(:atom, {:format => 'atom', :key => User.current.rss_key}, :title => "#{@issue.project} - #{@issue.tracker} ##{@issue.id}: #{@issue.subject}") %>
 <% end %>
 
-<%= context_menu issues_context_menu_path %>
-
+<%= context_menu %>
